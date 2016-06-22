@@ -1,0 +1,24 @@
+{
+  "name": "frontend-boilerplate",
+  "version": "1.0.0",
+  "description": "This is just my personal boilerplate.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/xwartz/frontend-boilerplate.git"
+  },
+  "keywords": [
+    "webpack",
+    "babel",
+    "eslint"
+  ],
+  "author": "xwartz",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/xwartz/frontend-boilerplate/issues"
+  },
+  "homepage": "https://github.com/xwartz/frontend-boilerplate#readme"
+}
