@@ -4,30 +4,10 @@ import baseConfig from './webpack.config.base'
 const config = {
   ...baseConfig,
 
-  output: {
-    ...baseConfig.output,
-
-    publicPath: './app/'
-  },
-
-  module: {
-    ...baseConfig.module,
-
-    loaders: [
-      ...baseConfig.module.loaders,
-      {
-        test: /\.scss$/,
-        loader: 'style!css!sass'
-      }
-    ]
-  },
-
   plugins: [
     ...baseConfig.plugins,
-    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
     new webpack.DefinePlugin({
-      __DEV__: false,
       'process.env': {
         NODE_ENV: JSON.stringify('production')
       }

@@ -2,32 +2,49 @@
 
 import path from 'path'
 import webpack from 'webpack'
+import precss from 'precss'
+import autoprefixer from 'autoprefixer'
 
 export default {
+  cache: true,
+
+  context: path.join(__dirname, './src'),
 
   entry: {
-    app: ['./src/index'],
+    app: './index.js',
+    html: './index.html',
     vendor: [
       'react',
       'react-dom',
+      'react-router',
+      'react-router-redux',
       'react-redux',
       'redux',
-      'redux-thunk'
+      'redux-thunk',
+      'redux-actions',
+      'lodash',
+      'normalizr',
+      'isomorphic-fetch',
+      'humps'
     ]
   },
 
   output: {
-    path: path.join(__dirname, 'app'),
-    filename: '[name].js'
+    path: path.join(__dirname, './static'),
+    publicPath: '/static/',
+    filename: '[name].bundle.js'
   },
 
   module: {
     loaders: [{
-      test: /\.jsx?$/,
-      exclude: /node_modules/,
-      loaders: ['react-hot', 'babel']
+      test: /\.(html)$/,
+      loader: 'file?name=[name].[ext]'
     }, {
-      test: /\.json$/,
+      test: /\.(js|jsx)$/,
+      exclude: /node_modules/,
+      loader: 'react-hot!babel'
+    }, {
+      test: /\.(json)$/,
       loader: 'json'
     }, {
       test: /\.(ttf|eot|svg|woff(2)?)(\?[a-z0-9]+)?$/,
@@ -35,31 +52,31 @@ export default {
     }, {
       test: /\.(png|jpg|gif)$/,
       loader: 'url?limit=10000!img?progressive=true'
-    }],
-    noParse: /node_modules\/json-schema\/lib\/validate\.js/
+    }, {
+      test: /\.scss$/,
+      loader: 'style!css!postcss'
+    }]
+  },
+
+  postcss () {
+    return [precss, autoprefixer]
   },
 
   resolve: {
     extensions: ['', '.js', '.jsx', '.json'],
-    packageMains: ['webpack', 'browser', 'web', 'browserify', ['jam', 'main'], 'main'],
     alias: {
-      utils: path.join(__dirname, 'src/utils'),
-      components: path.join(__dirname, 'src/components')
+      components: path.join(__dirname, 'src/components'),
+      actions: path.join(__dirname, 'src/actions')
     }
   },
 
   plugins: [
-    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.js')
+    new webpack.optimize.CommonsChunkPlugin('vendor', 'vendor.bundle.js'),
+    new webpack.optimize.OccurenceOrderPlugin()
   ],
 
   externals: [
     // put your node 3rd party libraries which can't be built with webpack here
     // (mysql, mongodb, and so on..)
   ]
-
-  // node: {
-  //   fs: 'empty',
-  //   net: 'empty',
-  //   tls: 'empty'
-  // }
 }
